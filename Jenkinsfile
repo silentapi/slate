@@ -1,15 +1,23 @@
 pipeline {
-	agent any
+	agent {
+		image 'gradle:latest' 
+        args '-v /root/.gradle:/root/.gradle' 
+	}
 	
 	stages {
-		stage("Build") {
+		stage("Compile") {
 			steps {
-				sh "./gradlew build"
+				sh "./gradlew compileJava"
 			}
 		}
 		stage("Unit Test") {
 			steps {
 				sh "./gradlew test"
+			}
+		}
+		stage("Deliver") {
+			steps {
+				sh "./gradlew bootJar"
 			}
 		}
 	}
