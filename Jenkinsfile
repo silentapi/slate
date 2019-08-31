@@ -4,6 +4,10 @@ pipeline {
         args '-v /root/.gradle:/root/.gradle' 
 	}
 	
+	options {
+		skipStagesAfterUnstable()
+	}
+	
 	stages {
 		stage("Compile") {
 			steps {
@@ -21,4 +25,9 @@ pipeline {
 			}
 		}
 	}
+	post {
+        always {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+        }
+    }
 }
